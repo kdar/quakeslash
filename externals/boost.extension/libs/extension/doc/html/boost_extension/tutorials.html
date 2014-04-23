@@ -1,0 +1,318 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Tutorials</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.67.2">
+<link rel="start" href="../index.html" title="Chapter 1. Boost.Extension">
+<link rel="up" href="../index.html" title="Chapter 1. Boost.Extension">
+<link rel="prev" href="shared_libraries/shared_library_class.html" title="shared_library
+      class">
+<link rel="next" href="tutorials/tutorial02.html" title=" Tutorial 2 - Basic
+      Factories">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
+<td align="center"><a href="../libraries.html">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="shared_libraries/shared_library_class.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tutorials/tutorial02.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_extension.tutorials"></a><a href="tutorials.html" title="Tutorials">Tutorials</a></h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="tutorials.html#boost_extension.tutorials.tutorial01"> Tutorial 1 - Using
+      the <code class="computeroutput"><span class="identifier">shared_library</span></code> class</a></span></dt>
+<dt><span class="section"><a href="tutorials/tutorial02.html"> Tutorial 2 - Basic
+      Factories</a></span></dt>
+<dt><span class="section"><a href="tutorials/tutorial03.html"> Tutorial 3 - Multiple
+      and Implementation Inheritance</a></span></dt>
+<dt><span class="section"><a href="tutorials/tutorial04.html"> Tutorial 4 - Multi-type
+      Containers</a></span></dt>
+</dl></div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_extension.tutorials.tutorial01"></a><a href="tutorials.html#boost_extension.tutorials.tutorial01" title=" Tutorial 1 - Using
+      the shared_library class"> Tutorial 1 - Using
+      the <code class="computeroutput"><span class="identifier">shared_library</span></code> class</a></h3></div></div></div>
+<p>
+        The <code class="literal"><code class="computeroutput"><a href="../boost/extensions/shared_library.html" title="Class shared_library">shared_library</a></code></code>
+        class facilitates loading shared libraries and calling functions from them.
+      </p>
+<p>
+        This tutorial will describe building a shared library with a single exported
+        function, and then creating an executable that loads the shared library and
+        calls the function.
+      </p>
+<p>
+        For purposes of this tutorial, Boost.Build will be used as the build system.
+      </p>
+<p>
+        The options put into this build file are boilerplate that will be reused
+        for the other examples in this documentation.
+      </p>
+<p>
+        Shared libraries on different platforms can have different prefixes and/or
+        extensions, for example:
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          .dll (Windows)
+        </li>
+<li>
+          .so (Unix/Linux)
+        </li>
+<li>
+          .dylib or .bundle (OS X)
+        </li>
+</ul></div>
+<p>
+        In order to simplify loading of these libraries, it is common to use a custom
+        naming scheme. For these examples, all shared libraries are prefixed with
+        "lib" and end with ".extension", but it is fine to use
+        a different naming scheme.
+      </p>
+<p>
+        To achieve this in Boost.Build, add the following lines at the top of the
+        Jamfile:
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">import</span> <span class="identifier">type</span> <span class="special">:</span> <span class="identifier">change</span><span class="special">-</span><span class="identifier">generated</span><span class="special">-</span><span class="identifier">target</span><span class="special">-</span><span class="identifier">suffix</span> <span class="special">;</span>
+<span class="identifier">import</span> <span class="identifier">type</span> <span class="special">:</span> <span class="identifier">change</span><span class="special">-</span><span class="identifier">generated</span><span class="special">-</span><span class="identifier">target</span><span class="special">-</span><span class="identifier">prefix</span> <span class="special">;</span>
+<span class="identifier">type</span><span class="special">.</span><span class="identifier">change</span><span class="special">-</span><span class="identifier">generated</span><span class="special">-</span><span class="identifier">target</span><span class="special">-</span><span class="identifier">suffix</span> <span class="identifier">SHARED_LIB</span> <span class="special">:</span> <span class="special">:</span> <span class="identifier">extension</span> <span class="special">;</span>
+<span class="identifier">type</span><span class="special">.</span><span class="identifier">change</span><span class="special">-</span><span class="identifier">generated</span><span class="special">-</span><span class="identifier">target</span><span class="special">-</span><span class="identifier">prefix</span> <span class="identifier">SHARED_LIB</span> <span class="special">:</span> <span class="special">:</span> <span class="identifier">lib</span> <span class="special">;</span>
+</pre>
+<p>
+      </p>
+<p>
+        This example uses code from both the main Boost tree, and from the Extension
+        headers - which are currently located in the sandbox. Make sure that BOOST_ROOT
+        and BOOST_SANDBOX_ROOT are set to the locations of these two trees - or use
+        the related options for your compiler or IDE.
+      </p>
+<p>
+        Here, both of those directories are added as include paths.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">import</span> <span class="identifier">os</span> <span class="special">;</span>
+
+<span class="identifier">local</span> <span class="identifier">BOOST_ROOT</span> <span class="special">=</span> <span class="special">[</span> <span class="identifier">os</span><span class="special">.</span><span class="identifier">environ</span> <span class="identifier">BOOST_ROOT</span> <span class="special">]</span> <span class="special">;</span>
+<span class="identifier">local</span> <span class="identifier">BOOST_SANDBOX_ROOT</span> <span class="special">=</span> <span class="special">[</span> <span class="identifier">os</span><span class="special">.</span><span class="identifier">environ</span> <span class="identifier">BOOST_SANDBOX_ROOT</span> <span class="special">]</span> <span class="special">;</span>
+<span class="identifier">project</span> 
+    <span class="special">:</span> <span class="identifier">requirements</span>
+      <span class="special">&lt;</span><span class="identifier">include</span><span class="special">&gt;</span>#<span class="special">(</span><span class="identifier">BOOST_SANDBOX_ROOT</span><span class="special">)</span>
+      <span class="special">&lt;</span><span class="identifier">include</span><span class="special">&gt;</span>#<span class="special">(</span><span class="identifier">BOOST_ROOT</span><span class="special">)</span>
+    <span class="special">:</span>
+    <span class="special">;</span>
+</pre>
+<p>
+      </p>
+<p>
+        This final section of the Jamfile compiles both the shared library and main
+        executable, and installs them into the binaries/ subdirectory.
+      </p>
+<p>
+        It is usually simplest to place all shared libraries used by an application
+        in a common directory.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">lib</span> <span class="identifier">tutorial_1</span> <span class="special">:</span> <span class="identifier">tutorial_1</span><span class="special">/</span><span class="identifier">hello_world</span><span class="special">.</span><span class="identifier">cpp</span> <span class="special">:</span> <span class="special">&lt;</span><span class="identifier">link</span><span class="special">&gt;</span><span class="identifier">shared</span> <span class="special">;</span>
+<span class="identifier">exe</span> <span class="identifier">tutorial_1_bin</span> <span class="special">:</span> <span class="identifier">tutorial_1</span><span class="special">/</span><span class="identifier">main</span><span class="special">.</span><span class="identifier">cpp</span> <span class="special">;</span>
+
+<span class="identifier">install</span> <span class="identifier">binaries</span> <span class="special">:</span> 
+  <span class="identifier">tutorial_1</span> <span class="identifier">tutorial_1_bin</span>
+  <span class="special">;</span>
+</pre>
+<p>
+      </p>
+<p>
+        The hello_world.cpp file is the source of the shared library. It consists
+        of a single exported function which prints out a message a number of times,
+        according to the <code class="computeroutput"><span class="identifier">repetitions</span></code>
+        parameter to the function.
+      </p>
+<p>
+        The &lt;iostream&gt; header is included for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span></code>.
+        The &lt;boost/extension/extension.hpp&gt; header is used for the <code class="computeroutput"><span class="identifier">BOOST_EXTENSION_EXPORT_DECL</span></code> macro.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">extension</span><span class="special">/</span><span class="identifier">extension</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+<p>
+        In C, each function name in a compilation unit is unique. In C++, however,
+        function overloading is permitted - as are various types of templated functions,
+        namespaces etc. Because of this, C++ function names are mangled for linking.
+        In order to find a function in a shared library, its name must be known.
+        This leaves two options:
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          Determine the mangled name.
+        </li>
+<li>
+          Declare that the function has C linkage, using the <code class="computeroutput"><span class="keyword">extern</span>
+          <span class="string">"C"</span></code> declaration.
+        </li>
+</ul></div>
+<p>
+        Extension uses the second approach. Though this eases portability, it also
+        poses a risk to type safety. A simple, cross-platform solution to this problem
+        would probably require direction from the C++ Standards Committee. Until
+        that time, the <a href="type_safety.html" title=" Type Safety of Boost.Extension">Type Safety</a>
+        section has advice on avoding type safety issues when using the <code class="literal"><code class="computeroutput"><a href="../boost/extensions/shared_library.html" title="Class shared_library">shared_library</a></code></code>
+        class.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="comment">// Any exported function or variable must be declared
+</span><span class="comment">// extern "C" to avoid C++ name mangling.
+</span><span class="keyword">extern</span> <span class="string">"C"</span>
+
+</pre>
+<p>
+      </p>
+<p>
+        Compilers have a number of options for exporting functions, variables and
+        type information when a shared library is loaded. For some compilers, or
+        with certain compiler settings, functions are not exported by default. Using
+        the `BOOST_EXTENSION_EXPORT_DECL macro, declared in extension.hpp, puts any
+        necessary export declarations in the function definition.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="comment">// Depending on the compiler and settings,
+</span><span class="comment">// it may be necessary to add a specific export
+</span><span class="comment">// declaration. The BOOST_EXTENSION_EXPORT_DECL
+</span><span class="comment">// adds this if necessary.
+</span><span class="keyword">void</span> <span class="identifier">BOOST_EXTENSION_EXPORT_DECL</span>
+<span class="identifier">boost_extension_hello_world</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">repetitions</span><span class="special">)</span> <span class="special">{</span>
+  <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">repetitions</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Hello World"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        Now that the shared library contents are set, the main executable needs to
+        be written to load it, and find the boost_extension_hello_world function.
+      </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          The <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span></code> header is included for error output.
+        </li>
+<li>
+          The <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">extension</span><span class="special">/</span><span class="identifier">shared_library</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> header is included for the <code class="literal"><code class="computeroutput"><a href="../boost/extensions/shared_library.html" title="Class shared_library">shared_library</a></code></code>
+          class.
+        </li>
+<li>
+          The <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> header is included for boost::function.
+          Though ordinary function pointers can be used with the <code class="literal"><code class="computeroutput"><a href="../boost/extensions/shared_library.html" title="Class shared_library">shared_library</a></code></code>
+          class, Boost.Function provides a more straightforward interface.
+        </li>
+</ul></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">extension</span><span class="special">/</span><span class="identifier">shared_library</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+<p>
+        Create a <code class="literal"><code class="computeroutput"><a href="../boost/extensions/shared_library.html" title="Class shared_library">shared_library</a></code></code>
+        object, and open it.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
+  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">extensions</span><span class="special">;</span>
+
+  <span class="comment">// In the Jamfile, shared libraries are set to have the same
+</span>  <span class="comment">// prefix and extension, even on different operating systems.
+</span>  <span class="comment">// This is for convenience in writing cross-platform code, but
+</span>  <span class="comment">// is not required. All shared libraries are set to start with
+</span>  <span class="comment">// "lib" and end with "extension".
+</span>  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">library_path</span> <span class="special">=</span> <span class="string">"libtutorial_1.extension"</span><span class="special">;</span>
+
+  <span class="comment">// Create shared_library object with the relative or absolute
+</span>  <span class="comment">// path to the shared library.
+</span>  <span class="identifier">shared_library</span> <span class="identifier">lib</span><span class="special">(</span><span class="identifier">library_path</span><span class="special">);</span>
+
+  <span class="comment">// Attempt to open the shared library.
+</span>  <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">lib</span><span class="special">.</span><span class="identifier">open</span><span class="special">())</span> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"Library failed to open: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">library_path</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+  <span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        If it opened successfully, find a call the <code class="computeroutput"><span class="identifier">boost_extension_hello_world</span></code>
+        function.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting">  <span class="comment">// Retrieve a function from the library, and store it in a Boost.Function
+</span>  <span class="comment">// object. It is also possible to use function pointers, but the syntax
+</span>  <span class="comment">// for Boost.Function is easier to understand. This retrieves a function
+</span>  <span class="comment">// called "boost_extension_hello_world" with a void return type and a single
+</span>  <span class="comment">// parameter of type int.
+</span>  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span> <span class="special">(</span><span class="keyword">int</span><span class="special">)&gt;</span>
+    <span class="identifier">f</span><span class="special">(</span><span class="identifier">lib</span><span class="special">.</span><span class="identifier">get</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"boost_extension_hello_world"</span><span class="special">));</span>
+
+  <span class="comment">// Check that the function was found.
+</span>  <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">f</span><span class="special">)</span> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"Function not found!"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+  <span class="special">}</span>
+
+  <span class="comment">// Call the function from the shared library with
+</span>  <span class="comment">// an integer parameter.
+</span>  <span class="identifier">f</span><span class="special">(</span><span class="number">4</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        This will print out "Hello World" four times.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright © 2008 Jeremy Pack<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="shared_libraries/shared_library_class.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="tutorials/tutorial02.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

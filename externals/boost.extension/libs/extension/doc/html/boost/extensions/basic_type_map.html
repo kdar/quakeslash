@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Class template basic_type_map</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.67.2">
+<link rel="start" href="../../index.html" title="Chapter 1. Boost.Extension">
+<link rel="up" href="../../boost_extension/reference.html#header.boost.extension.type_map.hpp" title="Header &lt;boost/extension/type_map.hpp&gt;">
+<link rel="prev" href="shared_library.html" title="Class shared_library">
+<link rel="next" href="type_map.html" title="Type definition type_map">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../libraries.html">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="shared_library.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_extension/reference.html#header.boost.extension.type_map.hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="type_map.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry" lang="en">
+<a name="boost.extensions.basic_type_map"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template basic_type_map</span></h2>
+<p>boost::extensions::basic_type_map &#8212; A collection of types. </p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> TypeInfo&gt; 
+<span class="bold"><strong>class</strong></span> <a href="basic_type_map.html" title="Class template basic_type_map">basic_type_map</a> {
+<span class="bold"><strong>public</strong></span>:
+
+  <span class="emphasis"><em>// <a href="basic_type_map.html#id286606-bb">public member functions</a></em></span>
+  <span class="type"></span> <a href="basic_type_map.html#id286609-bb">BOOST_STATIC_ASSERT</a>(has_nothrow_assign&lt; TypeInfo &gt;::value) ;
+  <span class="type"></span> <a href="basic_type_map.html#id286620-bb">BOOST_STATIC_ASSERT</a>(has_nothrow_copy_constructor&lt; TypeInfo &gt;::value) ;
+  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Type&gt; <span class="type">Type &amp;</span> <a href="basic_type_map.html#id286632-bb">get</a>() ;
+};</pre></div>
+<div class="refsect1" lang="en">
+<a name="id451840"></a><h2>Description</h2>
+<p>
+The `type_map` class is used for holding an arbitrary collection of types - no more than one of each type. In general, standard usage is as follows:</p>
+<pre class="programlisting"> type_map types;
+ // This will add an integer to the type_map, or retrieve
+ // one if it already exists.
+ int&amp; first_int(types.get());
+ first_int = 5;
+ // This will make second_int point to the same value
+ // as first_int.
+ int&amp; second_int(types.get());
+ second_int = 10;
+ // Now first_int is 10.
+ // It is also possible to use arbitrary types in the map,
+ // as long as they are default constructible.
+ std::set&lt;std::string&gt;&amp; my_string(types.get());
+</pre>
+<p> </p>
+<div class="refsect2" lang="en">
+<a name="id451856"></a><h3>
+<a name="id286606-bb"></a><code class="computeroutput">basic_type_map</code> public member functions</h3>
+<div class="orderedlist"><ol type="1">
+<li><pre class="literallayout"><span class="type"></span> <a name="id286609-bb"></a>BOOST_STATIC_ASSERT(has_nothrow_assign&lt; TypeInfo &gt;::value) ;</pre></li>
+<li><pre class="literallayout"><span class="type"></span> <a name="id286620-bb"></a>BOOST_STATIC_ASSERT(has_nothrow_copy_constructor&lt; TypeInfo &gt;::value) ;</pre></li>
+<li>
+<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> Type&gt; <span class="type">Type &amp;</span> <a name="id286632-bb"></a>get() ;</pre>
+<p>This is the only method users should ever need to use. By calling it with a template argument `Type`, a reference to the single object of that type will be returned, after being created if necessary. It is possible to omit the template parameter if it is clear from context: </p>
+<pre class="programlisting"> type_map types;
+ int&amp; my_int(types.get());
+</pre>
+<p> 
+</p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright © 2008 Jeremy Pack<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="shared_library.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_extension/reference.html#header.boost.extension.type_map.hpp"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="type_map.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

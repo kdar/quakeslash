@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\event">
+      <UniqueIdentifier>{40638249-691f-49e2-bfab-95258cd4504a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\resources">
+      <UniqueIdentifier>{6e162270-4902-438a-adbb-19597b36e623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\quakelive">
+      <UniqueIdentifier>{cfeaf2ac-579c-4825-b321-3393aef307f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\quakelive">
+      <UniqueIdentifier>{349fc0e3-27f3-4c6d-bcef-4a811eaae2f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\opengl">
+      <UniqueIdentifier>{c72f92da-3607-445f-8b9d-08552ffac00f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opengl">
+      <UniqueIdentifier>{703e1037-392f-4867-919b-d589af8cf256}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourXS\detourxs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quakelive\exe_quakelive.cpp">
+      <Filter>Source Files\quakelive</Filter>
+    </ClCompile>
+    <ClCompile Include="quakelive\trackeditem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="opengl\opengl.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="opengl\glfont2.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DetourXS\detourxs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="forcecast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="messages.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thisthunk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="detourxst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\event_impl.hxx">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="event\FastDelegate.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\mega.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\redarmor.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\yellowarmor.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="quakelive\exe_quakelive.h">
+      <Filter>Header Files\quakelive</Filter>
+    </ClInclude>
+    <ClInclude Include="quakelive\trackeditem.h">
+      <Filter>Header Files\quakelive</Filter>
+    </ClInclude>
+    <ClInclude Include="quakelive\datastructures.h">
+      <Filter>Header Files\quakelive</Filter>
+    </ClInclude>
+    <ClInclude Include="quakelive\offsets.h">
+      <Filter>Header Files\quakelive</Filter>
+    </ClInclude>
+    <ClInclude Include="quakelive\offsets_0.1.0.495.h">
+      <Filter>Header Files\quakelive</Filter>
+    </ClInclude>
+    <ClInclude Include="quakelive\ui.h">
+      <Filter>Header Files\quakelive</Filter>
+    </ClInclude>
+    <ClInclude Include="opengl\opengl.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="opengl\glfont2.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\aero.h">
+      <Filter>Header Files\resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

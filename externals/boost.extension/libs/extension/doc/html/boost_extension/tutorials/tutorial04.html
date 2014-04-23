@@ -1,0 +1,159 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title> Tutorial 4 - Multi-type
+      Containers</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.67.2">
+<link rel="start" href="../../index.html" title="Chapter 1. Boost.Extension">
+<link rel="up" href="../tutorials.html" title="Tutorials">
+<link rel="prev" href="tutorial03.html" title=" Tutorial 3 - Multiple
+      and Implementation Inheritance">
+<link rel="next" href="../extension_reflection.html" title=" Boost.Reflection/Boost.Extension
+    Interoperability">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../libraries.html">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tutorial03.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../extension_reflection.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_extension.tutorials.tutorial04"></a><a href="tutorial04.html" title=" Tutorial 4 - Multi-type
+      Containers"> Tutorial 4 - Multi-type
+      Containers</a></h3></div></div></div>
+<p>
+        There are two types of containers in the library that can hold objects of
+        heterogeneous types. The <code class="literal"><code class="computeroutput"><a href="../../boost/extensions/type_map.html" title="Type definition type_map">type_map</a></code></code>
+        is designed for use with <code class="literal"><code class="computeroutput"><a href="../../boost/extensions/shared_library.html" title="Class shared_library">shared_library</a></code></code>
+        so that a standard function signature, taking a <code class="literal"><code class="computeroutput"><a href="../../boost/extensions/type_map.html" title="Type definition type_map">type_map</a></code></code>,
+        can be provided by each shared library, helping to avoid type safety problems.
+      </p>
+<p>
+        The second type, <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>,
+        is designed for use with reflections or factories where the type of the function
+        is not known at compile time. A <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>
+        can be passed into such a factory or reflection, and then searched for needed
+        parameters, and return a list of missing parameters if necessary.
+      </p>
+<p>
+        The <code class="literal"><code class="computeroutput"><a href="../../boost/extensions/type_map.html" title="Type definition type_map">type_map</a></code></code>
+        is the simplest of the two, as it can hold exactly one element of each type.
+        It can hold multiple objects, but they will each be of a different type.
+      </p>
+<p>
+        Here's an example showing a <code class="literal"><code class="computeroutput"><a href="../../boost/extensions/type_map.html" title="Type definition type_map">type_map</a></code></code>
+        holding an <code class="computeroutput"><span class="keyword">int</span></code> and a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span></code>.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">extensions</span><span class="special">;</span>
+
+<span class="comment">// A type_map can hold one of each type, constructed
+</span><span class="comment">// as needed.
+</span><span class="identifier">type_map</span> <span class="identifier">types</span><span class="special">;</span>
+<span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">first_int</span><span class="special">(</span><span class="identifier">types</span><span class="special">.</span><span class="identifier">get</span><span class="special">());</span>
+<span class="identifier">first_int</span> <span class="special">=</span> <span class="number">100</span><span class="special">;</span>
+
+<span class="comment">// This actually points to the same int as first_int.
+</span><span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">second_int</span><span class="special">(</span><span class="identifier">types</span><span class="special">.</span><span class="identifier">get</span><span class="special">());</span>
+
+<span class="identifier">second_int</span> <span class="special">=</span> <span class="number">500</span><span class="special">;</span>
+
+<span class="comment">// This will print out 500.
+</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"first_int: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">first_int</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+<span class="comment">// Arbitrary default-constructible types can be held in a type_map.
+</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;&amp;</span> <span class="identifier">string_pairs</span><span class="special">(</span><span class="identifier">types</span><span class="special">.</span><span class="identifier">get</span><span class="special">());</span>
+</pre>
+<p>
+      </p>
+<p>
+        Note that pulling an integer out of it twice results in two references to
+        the same integer. The same occurs with any type placed into the <code class="literal"><code class="computeroutput"><a href="../../boost/extensions/type_map.html" title="Type definition type_map">type_map</a></code></code>.
+      </p>
+<p>
+        A <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>
+        on the other hand, can hold any number of elements of any type, and can automatically
+        convert objects to compatible types.
+      </p>
+<p>
+        The basic type stored in a <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>
+        is a <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter.html" title="Class template parameter">parameter</a></code></code>.
+        It is possible to declare a <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter.html" title="Class template parameter">parameter</a></code></code>
+        as being convertible to other types.
+      </p>
+<p>
+        By default, a <code class="computeroutput"><span class="keyword">static_cast</span></code> is
+        used to convert the types, but any conversion function can be provided. 
+</p>
+<pre class="programlisting"><span class="identifier">parameter</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;*</span> <span class="identifier">p</span> <span class="special">=</span> <span class="keyword">new</span> <span class="identifier">parameter</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="number">5</span><span class="special">);</span>
+<span class="identifier">p</span><span class="special">-&gt;</span><span class="identifier">converts_to</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;();</span>
+<span class="identifier">p</span><span class="special">-&gt;</span><span class="identifier">converts_to</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;();</span>
+</pre>
+<p>
+      </p>
+<p>
+        To have a float change to its ceiling when converted to an integer, one could
+        write:
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">FloatCeilingToInt</span><span class="special">(</span><span class="keyword">float</span><span class="special">*</span> <span class="identifier">f</span><span class="special">,</span> <span class="keyword">int</span><span class="special">*</span> <span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+  <span class="special">*</span><span class="identifier">i</span> <span class="special">=</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ceil</span><span class="special">(*</span><span class="identifier">f</span><span class="special">));</span>
+<span class="special">}</span>
+</pre>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">parameter</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;*</span> <span class="identifier">p</span> <span class="special">=</span> <span class="keyword">new</span> <span class="identifier">parameter</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;(</span><span class="number">4.9f</span><span class="special">);</span>
+<span class="identifier">p</span><span class="special">-&gt;</span><span class="identifier">converts_to_with_func</span><span class="special">(&amp;</span><span class="identifier">FloatCeilingToInt</span><span class="special">);</span>
+<span class="identifier">p</span><span class="special">-&gt;</span><span class="identifier">cast</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;();</span> <span class="comment">// returns 5
+</span></pre>
+<p>
+      </p>
+<p>
+        Once created, a <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter.html" title="Class template parameter">parameter</a></code></code>
+        can be placed into a <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>,
+        along with some sort of name. This name can be of arbitrary type: <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>
+        is a specialized <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/basic_parameter_map.html" title="Class template basic_parameter_map">basic_parameter_map</a></code></code>
+        with the std::string type as the name, but other types are also possible.
+      </p>
+<p>
+        A <code class="literal"><code class="computeroutput"><a href="../../boost/reflections/parameter_map.html" title="Type definition parameter_map">parameter_map</a></code></code>
+        works much like a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">multi_map</span></code> - since it is built on one. It
+        has a few specialty methods though. It is possible, for instance, to retrieve
+        all values that match a certain type and name, or the first value that matches.
+        
+</p>
+<pre class="programlisting"><span class="identifier">parameter_map</span> <span class="identifier">map</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">generic_parameter</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;*&gt;</span> <span class="identifier">int_vector</span><span class="special">(</span><span class="identifier">map</span><span class="special">.</span><span class="identifier">get</span><span class="special">(</span><span class="string">"some_int_name"</span><span class="special">));</span>
+<span class="identifier">generic_parameter</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;*</span> <span class="identifier">first_int</span><span class="special">(</span><span class="identifier">map</span><span class="special">.</span><span class="identifier">get_first</span><span class="special">(</span><span class="string">"some_int_name"</span><span class="special">));</span>
+</pre>
+<p>
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright © 2008 Jeremy Pack<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tutorial03.html"><img src="../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../tutorials.html"><img src="../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../extension_reflection.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

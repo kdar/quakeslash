@@ -1,0 +1,22 @@
+ALLPROJECT:
+  Configuration Properties
+  Code Generation
+   Set "Runtime Library" to "Multi-threaded Debug (/MTd)"
+
+-----------------
+
+AsmJit:
+ By default it compiles into a DLL and I need it as a static library.
+
+ Configuration Properties
+  General
+   Set "Target Extension" to ".lib"
+   Set "Configuration Type" to "Static library (.lib)"
+
+ In the Config.h header file of the project, uncomment:
+ #define ASMJIT_API
+
+-----------------
+
+freeglut
+ Build > Configuration Manager > Change Active solution configuration to "Debug_Static"
